@@ -1,0 +1,17 @@
+{
+  "name": "sort",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start:build": "tsc --watch >> /dev/null",
+    "start:run": "nodemon -q build/index.js",
+    "start": "concurrently npm:start:*"
+  },
+  "devDependencies": {
+    "concurrently": "^5.0.2",
+    "nodemon": "^2.0.2",
+    "tsc": "^1.20150623.0",
+    "typescript": "^3.7.4"
+  }
+}
