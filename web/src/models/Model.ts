@@ -14,7 +14,7 @@ interface Sync<T> {
 }
 
 interface Events {
-  on(eventName: string, callback: EventHandler): void;
+  on(eventName: string, eventHandler: EventHandler): void;
   trigger(eventName: string): void;
 }
 
@@ -38,12 +38,10 @@ export abstract class Model<T extends Identifiable> {
     const id = this.get('id');
 
     if (typeof id !== 'number') {
-      throw new Error('Cannot fech without an id');
+      throw new Error('Cannot fetch without an id');
     }
 
-    this.sync.fetch(id).then(response => {
-      this.set(response.data);
-    });
+    this.sync.fetch(id).then(response => this.set(response.data));
   }
 
   save(): void {
@@ -51,8 +49,6 @@ export abstract class Model<T extends Identifiable> {
     this.sync
       .save(data)
       .then(() => this.trigger('save'))
-      .catch(() => {
-        this.trigger('error');
-      });
+      .catch(() => this.trigger('error'));
   }
 }
