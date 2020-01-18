@@ -1,13 +1,12 @@
-import axios, { AxiosPromise } from 'axios';
-import { Identifiable } from './Identifiable';
+import axios, { AxiosPromise } from "axios";
+import { Identifiable } from "./Identifiable";
+import { Settings } from "./Settings";
 
 export class ApiSync<T extends Identifiable> {
-  private baseUrl = 'http://localhost:3000';
-
   constructor(private path: string) {}
 
   get url(): string {
-    return `${this.baseUrl}/${this.path}`;
+    return `${Settings.baseUrl}/${this.path}`;
   }
 
   fetch(id: number): AxiosPromise {

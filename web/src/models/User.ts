@@ -1,24 +1,31 @@
-import { Eventing, EventHandler } from './Eventing';
-import { ApiSync } from './ApiSync';
-import { Attributes } from './Attributes';
-import { Model } from './Model';
+import { Eventing, EventHandler } from "../lib/Eventing";
+import { ApiSync } from "../lib/ApiSync";
+import { Attributes } from "../lib/Attributes";
+import { Model } from "../lib/Model";
+import { Collection } from "../lib/Collection";
 
-interface UserProps {
+export interface UserProps {
   id?: number;
   name?: string;
   age?: number;
 }
 
 export class User extends Model<UserProps> {
+  static readonly path = "users";
+
   static buildUser(attrs: UserProps): User {
     return new User(
       new Attributes(attrs),
       new Eventing(),
-      new ApiSync('users')
+      new ApiSync(this.path)
     );
   }
 
+  static buildUserCollection(): Collection<User, UserProps> {
+    return new Collection(this.path, (json: UserProps) => this.buildUser(json));
+  }
+
   isAdminUser(): boolean {
-    return this.get('id') === 1;
+    return this.get("id") === 1;
   }
 }
