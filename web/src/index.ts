@@ -1,10 +1,15 @@
-import { Collection } from "./models/Collection";
-import { User, UserProps } from "./models/User";
+import { UserList } from './custom/views/UserList';
+import { User, UserProps } from './custom/models/User';
 
-const collection = User.buildUserCollection();
+const users = User.buildUserCollection();
 
-collection.events.on("change", () => {
-  collection.models.forEach((user: User) => console.log(user.get("name")));
+users.fetch();
+
+users.on('change', () => {
+  const root = document.getElementById('root');
+  if (root) {
+    new UserList(root, users).render();
+  } else {
+    throw new Error('Root element not found');
+  }
 });
-
-collection.fetch();
